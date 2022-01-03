@@ -1,25 +1,54 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
+// import Gameboard from './components/Gameboard';
+import Game from './components/Game';
+import ScoreBoard from './components/ScoreBoard';
+import About from './components/About';
+import HowToPlay from './components/HowToPlay';
+import Homepage from './components/Homepage';
+import Layout from './components/Layout';
+import { getDateString } from './utils';
 import './App.css';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 
-function App() {
+
+const App = () => {
+
+  const [visibleScreen, setVisibleScreen] = useState('menu'); //default to menu
+  const [scoreBoard, setScoreBoard] = useState([]);
+
+  const [score, setScore] = useState({
+    score: 0,
+    date: getDateString(),
+    moves: 0
+  })
+
+  const startGame = () => {
+    setVisibleScreen('game-board');
+    setScore((prevScore) => ({...prevScore, score: 0}));
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <div>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Homepage />}/>
+            <Route path="/game" element={<Game />}/>
+            <Route path="/score-board" element={<ScoreBoard />}/>
+            <Route path="/how-to-play" element={<HowToPlay />}/>
+            <Route path="/about" element={<About />}/>
+            {/* <Route path="*" element={<NoMatch />} /> */}
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
+  )
 }
 
 export default App;
