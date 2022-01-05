@@ -5,7 +5,7 @@ const Homepage = () => {
       <div className="Homepage">
         <ul className="menu">
           <li>
-            <Link to="/game">
+            <Link to="/game-play">
               Start Game
             </Link>
           </li>

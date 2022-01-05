@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react';
-// import Gameboard from './components/Gameboard';
-import Game from './components/Game';
-import ScoreBoard from './components/ScoreBoard';
-import About from './components/About';
-import HowToPlay from './components/HowToPlay';
-import Homepage from './components/Homepage';
-import Layout from './components/Layout';
+import { useSelector, useDispatch, Provider } from "react-redux";
+import { store } from "./utils/store";
+import Gamescreen from './Gamescreen';
+import ScoreBoard from './ScoreBoard';
+import About from './About';
+import HowToPlay from './HowToPlay';
+import Homepage from './Homepage';
+import NoMatch from './Layout/NoMatch';
+import Layout from './Layout';
 import { getDateString } from './utils';
 import './App.css';
 import {
   BrowserRouter,
   Routes,
   Route,
-  Link
 } from "react-router-dom";
 
+import { getScoreBoardList } from './ScoreBoard/scoreBoardSlice';
 
 const App = () => {
 
-  const [visibleScreen, setVisibleScreen] = useState('menu'); //default to menu
+  const scoreBoardList = useSelector(getScoreBoardList);
   const [scoreBoard, setScoreBoard] = useState([]);
 
   const [score, setScore] = useState({
@@ -28,27 +30,33 @@ const App = () => {
   })
 
   const startGame = () => {
-    setVisibleScreen('game-board');
     setScore((prevScore) => ({...prevScore, score: 0}));
   }
 
-
   return (
-    <BrowserRouter>
       <div>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Homepage />}/>
-            <Route path="/game" element={<Game />}/>
-            <Route path="/score-board" element={<ScoreBoard />}/>
+            <Route path="/game-play" element={<Gamescreen />}/>
+            <Route path="/score-board" element={<ScoreBoard scoreBoardList={scoreBoardList} />}/>
             <Route path="/how-to-play" element={<HowToPlay />}/>
             <Route path="/about" element={<About />}/>
-            {/* <Route path="*" element={<NoMatch />} /> */}
+            <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
       </div>
+  )
+}
+
+const appWithProvider = () => {
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
+        <App/>
+      </Provider>
     </BrowserRouter>
   )
 }
 
-export default App;
+export default appWithProvider;

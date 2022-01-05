@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
-const GAME_TIME = 5;
+const GAME_TIME = 10000;
 
-const ClockCounter = ({setIsGamerOver}) => {
+const ClockCounter = ({gameOver}) => {
     const [seconds, setSeconds] = useState(GAME_TIME);
 
     useEffect(() => {
@@ -10,10 +10,9 @@ const ClockCounter = ({setIsGamerOver}) => {
             setSeconds(seconds => seconds - 1);
         }, 1000);
 
-        // console.log('sec: ' , seconds);
 
         if(seconds <= 0) {
-            setIsGamerOver(true);
+            gameOver();
             clearInterval(interval);
         }
 

@@ -1,3 +1,12 @@
+body {
+  background: rgb(34,34,170);
+  background: linear-gradient(90deg, rgba(34,34,170,0.8169642857142857) 0%, rgba(0,212,255,0.7357317927170868) 100%);
+}
+
+a, a:hover, a:active, a:visited {
+  color: black;
+}
+
 .layout-wrapper {
   display: flex;
   padding: 30px;
