@@ -24,7 +24,7 @@ const candyColors = [
 ];
 
 const Gamescreen = () => {
-  const [currentColorBoard, setCurrentColorBoard2] = useState([]);
+  const [currentColorBoard, setCurrentColorBoard] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null);
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
   const [scoreDisplay, setScoreDisplay] = useState(0);
@@ -32,12 +32,6 @@ const Gamescreen = () => {
   
   const dispatch = useDispatch();
   let navigate = useNavigate();
-
-  const setCurrentColorBoard = (data, source) => {
-    // console.log('data:' , data.length, 'source:', source);
-
-    setCurrentColorBoard2(data)
-  }
   
   const checkForColumnOfFour = () => {
     for (let i = 0; i <= 39; i++) {
@@ -194,132 +188,83 @@ const Gamescreen = () => {
       if(cc>=800)
         return false;
 
-        //checkForColumnOfFour
-        for (let i = 0; i <= 39; i++) {
-          const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
-          const decidedColor = currentColorBoard[i]
-          const isBlank = currentColorBoard[i] === blankCandy
+      // checkForColumnOfFour
+      for (let i = 0; i <= 39; i++) {
+        const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
+        const decidedColor = currentColorBoard[i]
+        const isBlank = currentColorBoard[i] === blankCandy
+
+        if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+            setScoreDisplay((score) => score + 4)
+            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+            foundmatch = true
+        }
+      }
+    
   
-          if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+      // checkForRowOfFour
+      for (let i = 0; i < 64; i++) {
+          const rowOfFour = [i, i + 1, i + 2, i + 3];
+          const decidedColor = currentColorBoard[i];
+          const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
+          const isBlank = currentColorBoard[i] === blankCandy;
+
+          if (notValid.includes(i)) continue
+
+          if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
               setScoreDisplay((score) => score + 4)
-              columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
-              foundmatch = true
+              rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+              foundmatch =  true
           }
       }
     
   
-    /// checkForRowOfFour = () => {
-        for (let i = 0; i < 64; i++) {
-            const rowOfFour = [i, i + 1, i + 2, i + 3];
-            const decidedColor = currentColorBoard[i];
-            const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
-            const isBlank = currentColorBoard[i] === blankCandy;
-  
-            if (notValid.includes(i)) continue
-  
-            if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-                setScoreDisplay((score) => score + 4)
-                rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
-                foundmatch =  true
-            }
-        }
-    
-  
-    // checkForColumnOfThree = () => {
-        for (let i = 0; i <= 47; i++) {
-            const columnOfThree = [i, i + width, i + width * 2];
-            const decidedColor = currentColorBoard[i];
-            const isBlank = currentColorBoard[i] === blankCandy;
-  
-            if (columnOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-                setScoreDisplay((score) => score + 3);
-                columnOfThree.forEach(square => currentColorBoard[square] = blankCandy);
-                foundmatch = true;
-            }
-        }
-  
-  
-      // checkForRowOfThree = () => {
-          for (let i = 0; i < 64; i++) {
-              const rowOfThree = [i, i + 1, i + 2]
-              const decidedColor = currentColorBoard[i]
-              const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
-              const isBlank = currentColorBoard[i] === blankCandy
-  
-              if (notValid.includes(i)) continue
-  
-              if (rowOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-                  setScoreDisplay((score) => score + 3)
-                  rowOfThree.forEach(square => currentColorBoard[square] = blankCandy)
-                  foundmatch =  true
-              }
-          }
-      // setCurrentColorBoard([...currentColorBoard], 'checkForMatch1')
+      // checkForColumnOfThree
+      for (let i = 0; i <= 47; i++) {
+          const columnOfThree = [i, i + width, i + width * 2];
+          const decidedColor = currentColorBoard[i];
+          const isBlank = currentColorBoard[i] === blankCandy;
 
-      
-      // debugger
+          if (columnOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+              setScoreDisplay((score) => score + 3);
+              columnOfThree.forEach(square => currentColorBoard[square] = blankCandy);
+              foundmatch = true;
+          }
+      }
+
+      // checkForRowOfThree 
+      for (let i = 0; i < 64; i++) {
+          const rowOfThree = [i, i + 1, i + 2]
+          const decidedColor = currentColorBoard[i]
+          const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
+          const isBlank = currentColorBoard[i] === blankCandy
+
+          if (notValid.includes(i)) continue
+
+          if (rowOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+              setScoreDisplay((score) => score + 3)
+              rowOfThree.forEach(square => currentColorBoard[square] = blankCandy)
+              foundmatch =  true
+          }
+      }
+
       let blanks = currentColorBoard.filter((k,v) => {
         return k === blankCandy || k === undefined
       })
 
-
-      // console.log('2checkForMatch: currentColorBoard', currentColorBoard.length);
-      console.log('blanks:' , blanks.length , 'currentColorBoard.length: ' , currentColorBoard.length)
-
-      // console.log('a',a,b,c,d, hasEmptyBlocks, JSON.stringify(currentColorBoard))
-      // debugger
-      // console.log('3checkForMatch: currentColorBoard', currentColorBoard.length);
       if(blanks.length > 0) {
-        // console.log('clear blanks!! and call check for match again!')
-
-        // debugger
-
-        moveToSquareBelow();
-        console.log('currentColorBoard: ' , currentColorBoard.length)
-        
+        moveToSquareBelow();        
         setCurrentColorBoard([...currentColorBoard], 'checkForMatch2')
         checkForMatch(cc);
-      } else {
-        console.log('DONE!')
       }
       
     }
 
     useEffect(() => {
       createBoard();
-      // checkForMatch(1);
-    }, [])
-  
-    useEffect(() => {
-      // setTimeout(() => checkForMatch(1), 2000)
       checkForMatch(1)
     }, [])
-
       
-    // useEffect(() => {
-    //   createBoard();
-
-    // }, []);
-    // todo: fix from execution every time to per user move. till solving the issue
-    // todo: change to "checkForMatch"
-    // todo fix: once loaded and cleared. move 14 green to the right and see how it clear on the left side too.
-    // useEffect(() => {
-    //   // createBoard();
-
-    //   const timer = setInterval(() => {
-    //     let a = checkForColumnOfFour();
-    //     let b = checkForRowOfFour();
-    //     let c = checkForColumnOfThree();
-    //     let d = checkForRowOfThree();
-
-    //     // console.log('a',a,b,c,d)
-    //     moveToSquareBelow();
-    //     setCurrentColorBoard([...currentColorBoard], 'use effect')
-    //   }, 100);
-  
-    //   return () => clearInterval(timer);
-    // }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveToSquareBelow, currentColorBoard]);
-  
     const gameOver = () => {
       dispatch(addNewScoreToBoad({
         score: scoreDisplay,
@@ -330,7 +275,6 @@ const Gamescreen = () => {
       navigate(`/score-board`);
     }
 
-    // console.log('currentColorBoard : ' ,currentColorBoard)
     return (
         <div className="content-card no-rotate game-wrapper">
             <div className="game-info">
