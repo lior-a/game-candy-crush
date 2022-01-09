@@ -16,12 +16,11 @@ import {
   Route,
 } from "react-router-dom";
 
-import { getScoreBoardList } from './ScoreBoard/scoreBoardSlice';
+import { getScoreBoardList, getScoreBoardSortByHighScoreList } from './ScoreBoard/scoreBoardSlice';
 
 const App = () => {
 
-  const scoreBoardList = useSelector(getScoreBoardList);
-  const [scoreBoard, setScoreBoard] = useState([]);
+  // const scoreBoardList = useSelector(getScoreBoardSortByHighScoreList);
 
   const [score, setScore] = useState({
     score: 0,
@@ -39,7 +38,7 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Homepage />}/>
             <Route path="/game-play" element={<Gamescreen />}/>
-            <Route path="/score-board" element={<ScoreBoard scoreBoardList={scoreBoardList} />}/>
+            <Route path="/score-board" element={<ScoreBoard  />}/>
             <Route path="/how-to-play" element={<HowToPlay />}/>
             <Route path="/about" element={<About />}/>
             <Route path="*" element={<NoMatch />} />

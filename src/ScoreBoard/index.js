@@ -1,6 +1,11 @@
-const ScoreBoard = ({scoreBoardList}) => {
+import { getScoreBoardList, getScoreBoardSortByHighScoreList } from './scoreBoardSlice';
+import { useSelector, useDispatch, Provider } from "react-redux";
+
+const ScoreBoard = () => {
+    const scoreBoardList = useSelector(getScoreBoardSortByHighScoreList);
+
     return (
-        <div className="score-board">
+        <div className="content-card score-board no-rotate">
             <h2>Game Score Board</h2>
             <table>
                 <thead>

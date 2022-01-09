@@ -23,7 +23,7 @@ const candyColors = [
   yellowCandy
 ];
 
-const Gamescreen = ({setScoreBoard}) => {
+const Gamescreen = () => {
   const [currentColorBoard, setCurrentColorBoard2] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null);
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
@@ -34,86 +34,77 @@ const Gamescreen = ({setScoreBoard}) => {
   let navigate = useNavigate();
 
   const setCurrentColorBoard = (data, source) => {
-    console.log('data:' , data.length, 'source:', source);
+    // console.log('data:' , data.length, 'source:', source);
 
     setCurrentColorBoard2(data)
   }
   
-    const checkForColumnOfFour = () => {
-      for (let a = 0; a <= 39; a++) {
-          const columnOfFour = [a, a+width, a + width * 2, a + width * 3];
-          const decidedColor = currentColorBoard[a];
-          const isBlank = currentColorBoard[a] === blankCandy;
-          // console.log('a:' , a, ':: currentColorBoard: '  , currentColorBoard.length , "columnOfFour: '",columnOfFour)
-          if(columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-            setScoreDisplay((prevScore) => prevScore + 4);
-            // setScore((prevScore) => ({...prevScore, score: prevScore.score + 4}));
-            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy);
-            return true;
-          }
-      }
+  const checkForColumnOfFour = () => {
+    for (let i = 0; i <= 39; i++) {
+        const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
+        const decidedColor = currentColorBoard[i]
+        const isBlank = currentColorBoard[i] === blankCandy
+
+        if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+            setScoreDisplay((score) => score + 4)
+            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+            return true
+        }
     }
+  }
 
-    const checkForColumnOfThree = () => {
-      for (let i = 0; i <= 47; i++) {
-          const columnOfThree = [i, i + width, i + width * 2]
-          const decidedColor = currentColorBoard[i]
-          const isBlank = currentColorBoard[i] === blankCandy
-          // console.log('currentColorBoard: ' , currentColorBoard.length)
+  const checkForRowOfFour = () => {
+      for (let i = 0; i < 64; i++) {
+          const rowOfFour = [i, i + 1, i + 2, i + 3];
+          const decidedColor = currentColorBoard[i];
+          const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
+          const isBlank = currentColorBoard[i] === blankCandy;
 
-          if (columnOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-              setScoreDisplay((score) => score + 3)
-              columnOfThree.forEach(square => currentColorBoard[square] = blankCandy)
+          if (notValid.includes(i)) continue
+
+          if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+              setScoreDisplay((score) => score + 4)
+              rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
               return true
           }
       }
   }
-  
+
+  const checkForColumnOfThree = () => {
+      for (let i = 0; i <= 47; i++) {
+          const columnOfThree = [i, i + width, i + width * 2];
+          const decidedColor = currentColorBoard[i];
+          const isBlank = currentColorBoard[i] === blankCandy;
+
+          if (columnOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+              setScoreDisplay((score) => score + 3);
+              columnOfThree.forEach(square => currentColorBoard[square] = blankCandy);
+              return true;
+          }
+      }
+  }
+
     const checkForRowOfThree = () => {
-      for (let a = 0; a < 64; a++) {
-        const rowOfThree = [a, a + 1, a + 2];
-        const decidedColor = currentColorBoard[a];
-        const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64];
-        const isBlank = currentColorBoard[a] === blankCandy;
-        
-        
-        if(notValid.includes(a)) continue
-        
-        if(rowOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-            setScoreDisplay((prevScore) => prevScore + 3);
-            // setScore((prevScore) => ({...prevScore, score: prevScore.score + 3}));
-            rowOfThree.forEach(square => currentColorBoard[square] = blankCandy);
-            return true;
-          }
-      }
-    }
-  
-    const checkForRowOfFour = () => {
-      for (let a = 0; a < 64; a++) {
-        const rowOfFour = [a, a + 1, a + 2, a + 3];
-        const decidedColor = currentColorBoard[a];
-        const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 62, 63] //correct 62,63. not 63,64
-        // const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64]
-        const isBlank = currentColorBoard[a] === blankCandy;
-        // console.log('a: ' ,a)
-        if(notValid.includes(a)) continue
-        
-        if(rowOfFour.every(square => currentColorBoard[square] === decidedColor) && !isBlank) {
-            // console.log('row of 4 SCORE±!')
-            setScoreDisplay((prevScore) => prevScore + 4);
-            // setScore((prevScore) => ({...prevScore, score: prevScore.score + 4}));
-  
-            rowOfFour.forEach(square => currentColorBoard[square] = blankCandy);
-            return true;
-          }
-      }
+        for (let i = 0; i < 64; i++) {
+            const rowOfThree = [i, i + 1, i + 2]
+            const decidedColor = currentColorBoard[i]
+            const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
+            const isBlank = currentColorBoard[i] === blankCandy
+
+            if (notValid.includes(i)) continue
+
+            if (rowOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+                setScoreDisplay((score) => score + 3)
+                rowOfThree.forEach(square => currentColorBoard[square] = blankCandy)
+                return true
+            }
+        }
     }
   
     const moveToSquareBelow = () => {
       for(let a = 0; a <= 55; a++) {
         const firstRow = [0,1,2,3,4,5,6,7];
         const isFirstRow = firstRow.includes(a);
-  // console.log('a::: ', a)
         // create new element
         if(isFirstRow && currentColorBoard[a] === blankCandy) {
           let randomNumber = Math.floor(Math.random() * candyColors.length);
@@ -176,6 +167,8 @@ const Gamescreen = ({setScoreBoard}) => {
         setCurrentColorBoard([...currentColorBoard], 'drag end');
       }
       // console.timeLog('currentColorBoardV1', window.currentColorBoardV1, 'currentColorBoardV2:' , window.currentColorBoardV2)
+
+      checkForMatch(1)
     }
   
     const createBoard = () => {
@@ -189,38 +182,89 @@ const Gamescreen = ({setScoreBoard}) => {
         randomColorBoard.push(randomColor);
       }
   
-      // console.log('create board;' , (randomColorBoard), ' ::'  ,randomColorBoard.length)
       // randomColorBoard = ["/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/red-candy.3658b37c743115db2a9a.png"];
 
       setCurrentColorBoard(randomColorBoard, 'createboard');
-  
     }
 
     const checkForMatch = (cc) => {
-      // console.log('C: ' ,cc)
-
-      // console.log('0checkForMatch: currentColorBoard', currentColorBoard.length);
       cc++;
+      console.log('counter: ' , cc)
+      let foundmatch = false;
       if(cc>=800)
         return false;
 
-      let a = checkForColumnOfFour();
-      let b = checkForRowOfFour();
-      let c = checkForColumnOfThree();
-      let d = checkForRowOfThree();
+        //checkForColumnOfFour
+        for (let i = 0; i <= 39; i++) {
+          const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
+          const decidedColor = currentColorBoard[i]
+          const isBlank = currentColorBoard[i] === blankCandy
+  
+          if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+              setScoreDisplay((score) => score + 4)
+              columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+              foundmatch = true
+          }
+      }
+    
+  
+    /// checkForRowOfFour = () => {
+        for (let i = 0; i < 64; i++) {
+            const rowOfFour = [i, i + 1, i + 2, i + 3];
+            const decidedColor = currentColorBoard[i];
+            const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
+            const isBlank = currentColorBoard[i] === blankCandy;
+  
+            if (notValid.includes(i)) continue
+  
+            if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+                setScoreDisplay((score) => score + 4)
+                rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+                foundmatch =  true
+            }
+        }
+    
+  
+    // checkForColumnOfThree = () => {
+        for (let i = 0; i <= 47; i++) {
+            const columnOfThree = [i, i + width, i + width * 2];
+            const decidedColor = currentColorBoard[i];
+            const isBlank = currentColorBoard[i] === blankCandy;
+  
+            if (columnOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+                setScoreDisplay((score) => score + 3);
+                columnOfThree.forEach(square => currentColorBoard[square] = blankCandy);
+                foundmatch = true;
+            }
+        }
+  
+  
+      // checkForRowOfThree = () => {
+          for (let i = 0; i < 64; i++) {
+              const rowOfThree = [i, i + 1, i + 2]
+              const decidedColor = currentColorBoard[i]
+              const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
+              const isBlank = currentColorBoard[i] === blankCandy
+  
+              if (notValid.includes(i)) continue
+  
+              if (rowOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+                  setScoreDisplay((score) => score + 3)
+                  rowOfThree.forEach(square => currentColorBoard[square] = blankCandy)
+                  foundmatch =  true
+              }
+          }
       // setCurrentColorBoard([...currentColorBoard], 'checkForMatch1')
-      // console.log('1checkForMatch: currentColorBoard', currentColorBoard.length);
 
       
       // debugger
       let blanks = currentColorBoard.filter((k,v) => {
-        // console.log('k', typeof k,v)
         return k === blankCandy || k === undefined
       })
 
 
       // console.log('2checkForMatch: currentColorBoard', currentColorBoard.length);
-      console.log('blanks:' , blanks.length, blanks , 'currentColorBoard.length: ' , currentColorBoard)
+      console.log('blanks:' , blanks.length , 'currentColorBoard.length: ' , currentColorBoard.length)
 
       // console.log('a',a,b,c,d, hasEmptyBlocks, JSON.stringify(currentColorBoard))
       // debugger
@@ -228,8 +272,10 @@ const Gamescreen = ({setScoreBoard}) => {
       if(blanks.length > 0) {
         // console.log('clear blanks!! and call check for match again!')
 
+        // debugger
 
         moveToSquareBelow();
+        console.log('currentColorBoard: ' , currentColorBoard.length)
         
         setCurrentColorBoard([...currentColorBoard], 'checkForMatch2')
         checkForMatch(cc);
@@ -246,7 +292,7 @@ const Gamescreen = ({setScoreBoard}) => {
   
     useEffect(() => {
       // setTimeout(() => checkForMatch(1), 2000)
-      // checkForMatch(1)
+      checkForMatch(1)
     }, [])
 
       
@@ -257,22 +303,22 @@ const Gamescreen = ({setScoreBoard}) => {
     // todo: fix from execution every time to per user move. till solving the issue
     // todo: change to "checkForMatch"
     // todo fix: once loaded and cleared. move 14 green to the right and see how it clear on the left side too.
-    useEffect(() => {
-      // createBoard();
+    // useEffect(() => {
+    //   // createBoard();
 
-      const timer = setInterval(() => {
-        let a = checkForColumnOfFour();
-        let b = checkForRowOfFour();
-        let c = checkForColumnOfThree();
-        let d = checkForRowOfThree();
+    //   const timer = setInterval(() => {
+    //     let a = checkForColumnOfFour();
+    //     let b = checkForRowOfFour();
+    //     let c = checkForColumnOfThree();
+    //     let d = checkForRowOfThree();
 
-        // console.log('a',a,b,c,d)
-        moveToSquareBelow();
-        setCurrentColorBoard([...currentColorBoard])
-      }, 100);
+    //     // console.log('a',a,b,c,d)
+    //     moveToSquareBelow();
+    //     setCurrentColorBoard([...currentColorBoard], 'use effect')
+    //   }, 100);
   
-      return () => clearInterval(timer);
-    }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveToSquareBelow, currentColorBoard]);
+    //   return () => clearInterval(timer);
+    // }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveToSquareBelow, currentColorBoard]);
   
     const gameOver = () => {
       dispatch(addNewScoreToBoad({
@@ -286,10 +332,12 @@ const Gamescreen = ({setScoreBoard}) => {
 
     // console.log('currentColorBoard : ' ,currentColorBoard)
     return (
-        <div className="game-wrapper">
+        <div className="content-card no-rotate game-wrapper">
             <div className="game-info">
             <div className="score">
                 <h2>Score: {scoreDisplay}</h2>
+            </div>
+            <div className="moves">
                 <h2>Moves: {movesDisplay}</h2>
             </div>
             <ClockCounter gameOver={gameOver}/>

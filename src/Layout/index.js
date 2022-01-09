@@ -1,13 +1,16 @@
-import { Outlet, Link } from "react-router-dom";
+import { useLocation , Outlet, Link } from "react-router-dom";
 
 const Layout = () => {
+    const currentPathName = useLocation().pathname;
+
+    const shouldShowLink = currentPathName !== '/';
     return (
         <div className="layout-wrapper">
             <div className="game-header">
-                <h1>Match Making Game</h1>
-                <Link to="/">
+                <h1 className="title">Match Making Game</h1>
+                {shouldShowLink && <Link to="/" className="back-button button-53 no-rotate">
                     {'<<'} Back
-                </Link>
+                </Link>}
             </div>
             <Outlet />
         </div>

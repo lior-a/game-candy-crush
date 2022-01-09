@@ -1,6 +1,6 @@
 const HowToPlay = () => {
     return (
-        <div className="how-to-play">
+        <div className="content-card no-rotate how-to-play">
         <h1>How To Play</h1>
         <p>
           1. Find a possible matching color of Candy. <br />
