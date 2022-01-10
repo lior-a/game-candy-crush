@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch, Provider } from "react-redux";
+import { Provider } from "react-redux";
 import { store } from "./utils/store";
 import Gamescreen from './Gamescreen';
 import ScoreBoard from './ScoreBoard';
@@ -16,11 +16,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import { getScoreBoardList, getScoreBoardSortByHighScoreList } from './ScoreBoard/scoreBoardSlice';
-
 const App = () => {
-
-  // const scoreBoardList = useSelector(getScoreBoardSortByHighScoreList);
 
   const [score, setScore] = useState({
     score: 0,
