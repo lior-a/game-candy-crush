@@ -4,7 +4,6 @@ import { loadState, saveState } from './localStorage';
 import { debounce } from './index';
 const persistedState = loadState();
 
-console.log('PRELOAD DATA:' , persistedState);
 const store = configureStore({
   reducer: scoreBoardSlice.reducer,
   preloadedState: persistedState,
@@ -12,7 +11,6 @@ const store = configureStore({
 
 
 store.subscribe(debounce(() => {
-  console.log('SAVE DATA TO LOCALSTORAGE', store.getState())
   saveState({
     scoreBoard: store.getState().scoreBoard,
   });

@@ -12,7 +12,6 @@ const scoreBoardSlice = createSlice({
   initialState: initialState,
   reducers: {
       addNewScoreToBoad(state, action) {
-        // console.log('SBslice.js: , ' , state)
         let newScore = {
             score: action.payload.score,
             date: action.payload.date,

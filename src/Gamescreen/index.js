@@ -158,9 +158,8 @@ const Gamescreen = () => {
       } else {
         currentColorBoard[squareBeingReplacedId] = squareBeingReplaced.getAttribute('src');
         currentColorBoard[squareBeingDraggedId] = squareBeingDragged.getAttribute('src');
-        setCurrentColorBoard([...currentColorBoard], 'drag end');
+        setCurrentColorBoard([...currentColorBoard]);
       }
-      // console.timeLog('currentColorBoardV1', window.currentColorBoardV1, 'currentColorBoardV2:' , window.currentColorBoardV2)
 
       checkForMatch(1)
     }
@@ -168,7 +167,6 @@ const Gamescreen = () => {
     const createBoard = () => {
       let randomColorBoard = [];
 
-      // todo: remove the mock. for some reason the mock doesn't work?!
       for(let a = 0; a < width * width; a ++) {
         const randNumber0to5 = Math.floor(Math.random() * candyColors.length);
         const randomColor = candyColors[randNumber0to5];
@@ -176,17 +174,15 @@ const Gamescreen = () => {
         randomColorBoard.push(randomColor);
       }
   
-      // randomColorBoard = ["/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/red-candy.3658b37c743115db2a9a.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/blue-candy.73120c156936a4206714.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/purple-candy.ae25b8a55e061a50346f.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/green-candy.599f70161bdb3cadac66.png","/static/media/orange-candy.f106b2cdd163575a7c68.png","/static/media/yellow-candy.a3d87a9b362b5f969133.png","/static/media/red-candy.3658b37c743115db2a9a.png"];
-
-      setCurrentColorBoard(randomColorBoard, 'createboard');
+      setCurrentColorBoard(randomColorBoard);
     }
 
-    const checkForMatch = (cc) => {
-      cc++;
-      console.log('counter: ' , cc)
+    const checkForMatch = (ReactFindMatchAlgoCounter) => {
+      ReactFindMatchAlgoCounter++;
+      
+      // todo: add logger and log the perforemence metric: logger.report({ReactFindMatchAlgoCounter});
+
       let foundmatch = false;
-      if(cc>=800)
-        return false;
 
       // checkForColumnOfFour
       for (let i = 0; i <= 39; i++) {
@@ -195,13 +191,12 @@ const Gamescreen = () => {
         const isBlank = currentColorBoard[i] === blankCandy
 
         if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-            setScoreDisplay((score) => score + 4)
-            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+            setScoreDisplay((score) => score + 4);
+            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy);
             foundmatch = true
         }
       }
     
-  
       // checkForRowOfFour
       for (let i = 0; i < 64; i++) {
           const rowOfFour = [i, i + 1, i + 2, i + 3];
@@ -218,7 +213,6 @@ const Gamescreen = () => {
           }
       }
     
-  
       // checkForColumnOfThree
       for (let i = 0; i <= 47; i++) {
           const columnOfThree = [i, i + width, i + width * 2];
@@ -254,8 +248,8 @@ const Gamescreen = () => {
 
       if(blanks.length > 0) {
         moveToSquareBelow();        
-        setCurrentColorBoard([...currentColorBoard], 'checkForMatch2')
-        checkForMatch(cc);
+        setCurrentColorBoard([...currentColorBoard])
+        checkForMatch(ReactFindMatchAlgoCounter);
       }
       
     }
