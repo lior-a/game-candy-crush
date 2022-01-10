@@ -1,5 +1,9 @@
 # Candy Crush Game
 
+# Game in play
+![Game in play](public/game-in-play.gif)
+
+
 ## Game Menu
 ![Game Menu](public/game-menu.png)
 

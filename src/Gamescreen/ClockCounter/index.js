@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const GAME_TIME = 60;
+const GAME_TIME = 20;
 
 const ClockCounter = ({gameOver}) => {
     const [seconds, setSeconds] = useState(GAME_TIME);
