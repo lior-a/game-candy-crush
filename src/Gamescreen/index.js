@@ -34,37 +34,37 @@ const Gamescreen = () => {
   let navigate = useNavigate();
   
   const checkForColumnOfFour = () => {
-    for (let i = 0; i <= 39; i++) {
-        const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
-        const decidedColor = currentColorBoard[i]
-        const isBlank = currentColorBoard[i] === blankCandy
+      for (let i = 0; i <= 39; i++) {
+          const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
+          const decidedColor = currentColorBoard[i]
+          const isBlank = currentColorBoard[i] === blankCandy
 
-        if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-            setScoreDisplay((score) => score + 4)
-            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
-            return true
-        }
-    }
-  }
-
-  const checkForRowOfFour = () => {
-      for (let i = 0; i < 64; i++) {
-          const rowOfFour = [i, i + 1, i + 2, i + 3];
-          const decidedColor = currentColorBoard[i];
-          const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
-          const isBlank = currentColorBoard[i] === blankCandy;
-
-          if (notValid.includes(i)) continue
-
-          if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+          if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
               setScoreDisplay((score) => score + 4)
-              rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+              columnOfFour.forEach(square => currentColorBoard[square] = blankCandy)
               return true
           }
       }
-  }
+    }
 
-  const checkForColumnOfThree = () => {
+    const checkForRowOfFour = () => {
+        for (let i = 0; i < 64; i++) {
+            const rowOfFour = [i, i + 1, i + 2, i + 3];
+            const decidedColor = currentColorBoard[i];
+            const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
+            const isBlank = currentColorBoard[i] === blankCandy;
+
+            if (notValid.includes(i)) continue
+
+            if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
+                setScoreDisplay((score) => score + 4)
+                rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
+                return true
+            }
+        }
+    }
+
+    const checkForColumnOfThree = () => {
       for (let i = 0; i <= 47; i++) {
           const columnOfThree = [i, i + width, i + width * 2];
           const decidedColor = currentColorBoard[i];
@@ -75,8 +75,8 @@ const Gamescreen = () => {
               columnOfThree.forEach(square => currentColorBoard[square] = blankCandy);
               return true;
           }
-      }
-  }
+        }
+    }
 
     const checkForRowOfThree = () => {
         for (let i = 0; i < 64; i++) {
@@ -139,8 +139,7 @@ const Gamescreen = () => {
       if(!validMove) {
         return false;
       }
-      //fix: not using set state. why?
-      // this is eaditing the data itself directly!
+
       currentColorBoard[squareBeingReplacedId] = squareBeingDragged.getAttribute('src');
       currentColorBoard[squareBeingDraggedId] = squareBeingReplaced.getAttribute('src');
   
@@ -160,8 +159,6 @@ const Gamescreen = () => {
         currentColorBoard[squareBeingDraggedId] = squareBeingDragged.getAttribute('src');
         setCurrentColorBoard([...currentColorBoard]);
       }
-
-      checkForMatch(1)
     }
   
     const createBoard = () => {
@@ -177,86 +174,8 @@ const Gamescreen = () => {
       setCurrentColorBoard(randomColorBoard);
     }
 
-    const checkForMatch = (ReactFindMatchAlgoCounter) => {
-      ReactFindMatchAlgoCounter++;
-      
-      // todo: add logger and log the perforemence metric: logger.report({ReactFindMatchAlgoCounter});
-
-      let foundmatch = false;
-
-      // checkForColumnOfFour
-      for (let i = 0; i <= 39; i++) {
-        const columnOfFour = [i, i + width, i + width * 2, i + width * 3]
-        const decidedColor = currentColorBoard[i]
-        const isBlank = currentColorBoard[i] === blankCandy
-
-        if (columnOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-            setScoreDisplay((score) => score + 4);
-            columnOfFour.forEach(square => currentColorBoard[square] = blankCandy);
-            foundmatch = true
-        }
-      }
-    
-      // checkForRowOfFour
-      for (let i = 0; i < 64; i++) {
-          const rowOfFour = [i, i + 1, i + 2, i + 3];
-          const decidedColor = currentColorBoard[i];
-          const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
-          const isBlank = currentColorBoard[i] === blankCandy;
-
-          if (notValid.includes(i)) continue
-
-          if (rowOfFour.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-              setScoreDisplay((score) => score + 4)
-              rowOfFour.forEach(square => currentColorBoard[square] = blankCandy)
-              foundmatch =  true
-          }
-      }
-    
-      // checkForColumnOfThree
-      for (let i = 0; i <= 47; i++) {
-          const columnOfThree = [i, i + width, i + width * 2];
-          const decidedColor = currentColorBoard[i];
-          const isBlank = currentColorBoard[i] === blankCandy;
-
-          if (columnOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-              setScoreDisplay((score) => score + 3);
-              columnOfThree.forEach(square => currentColorBoard[square] = blankCandy);
-              foundmatch = true;
-          }
-      }
-
-      // checkForRowOfThree 
-      for (let i = 0; i < 64; i++) {
-          const rowOfThree = [i, i + 1, i + 2]
-          const decidedColor = currentColorBoard[i]
-          const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
-          const isBlank = currentColorBoard[i] === blankCandy
-
-          if (notValid.includes(i)) continue
-
-          if (rowOfThree.every(square => currentColorBoard[square] === decidedColor && !isBlank)) {
-              setScoreDisplay((score) => score + 3)
-              rowOfThree.forEach(square => currentColorBoard[square] = blankCandy)
-              foundmatch =  true
-          }
-      }
-
-      let blanks = currentColorBoard.filter((k,v) => {
-        return k === blankCandy || k === undefined
-      })
-
-      if(blanks.length > 0) {
-        moveToSquareBelow();        
-        setCurrentColorBoard([...currentColorBoard])
-        checkForMatch(ReactFindMatchAlgoCounter);
-      }
-      
-    }
-
     useEffect(() => {
       createBoard();
-      checkForMatch(1)
     }, [])
       
     const gameOver = () => {
@@ -268,6 +187,18 @@ const Gamescreen = () => {
 
       navigate(`/score-board`);
     }
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+          checkForColumnOfFour()
+          checkForRowOfFour()
+          checkForColumnOfThree()
+          checkForRowOfThree()
+          moveToSquareBelow()
+          setCurrentColorBoard([...currentColorBoard])
+      }, 100)
+      return () => clearInterval(timer)
+    }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveToSquareBelow, currentColorBoard])
 
     return (
         <div className="content-card no-rotate game-wrapper">
@@ -300,6 +231,5 @@ const Gamescreen = () => {
         </div>
     )
 }
-
 
 export default Gamescreen;

@@ -9,13 +9,11 @@ const store = configureStore({
   preloadedState: persistedState,
 });
 
-
 store.subscribe(debounce(() => {
   saveState({
     scoreBoard: store.getState().scoreBoard,
   });
 }, 1000));
-
 
 export {
   store

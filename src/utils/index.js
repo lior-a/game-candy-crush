@@ -1,6 +1,5 @@
 
 /**
- * 
  * @returns string - string of date dd/mm/yyyy hh:mm
  */
 export const getDateString = () => {
