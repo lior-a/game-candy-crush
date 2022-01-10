@@ -3,7 +3,7 @@
 ## Game Menu
 ![Game Menu](public/game-menu.png)
 
-## Game Game Play
+## Game Play
 ![Game Game Play](public/game-gameplay.png)
 
 ## Game Scoreboard
